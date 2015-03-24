@@ -52,11 +52,6 @@ function Fire() {
         context.drawImage(background, 0, 0, canvas.width, canvas.height+500);
         context.drawImage(img, 50, 530, 230, 100);
         context.drawImage(img2, x, y, 25, 25);
-
-        if (y <= 0) {
-            clearInterval(interval);
-            return;
-        }
     };
     var interval = setInterval(Move, tick);
 }
