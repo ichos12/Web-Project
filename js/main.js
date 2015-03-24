@@ -3,6 +3,13 @@ canvas.width = window.innerWidth - 20;
 canvas.height = window.innerHeight - 300;
 var context = canvas.getContext("2d");
 
+var background = new Image();
+background.src = "img/background.jpg";
+background.onload = function() 
+{
+    context.drawImage(background, 0, 0, canvas.width, canvas.height+500);
+}
+
 var img = new Image();
 img.src = "img/Cannon.png";
 img.onload = function() 
@@ -14,48 +21,43 @@ var img2 = new Image();
 img2.src = "img/ball.png";
 img2.onload = function() 
 {
-    context.drawImage(img2, 150, 450, 10, 10);
+    context.drawImage(img2, 0, 0, 1, 1);
 }
 
-$(function() {
-    function Fire() {
-  
-        var Angle  = parseFloat($("#Angle").val()) * (Math.PI / 180);
-        var Speed  = parseFloat($("#Speed").val());
-        var g      = 9.81;
-        var x      = 150;
-        var y      = 450;
-        var i      = 0;
-        
-        var Ball  = $("#Ball");
-        
-        var tick = 100, gameTick = tick / 1000;
-        
-        var vX = Speed * Math.cos(Angle), 
-            vY = Speed * Math.sin(Angle);
-        
-        var dX = vX * gameTick, dVy = g * gameTick;
-        
-        var Move = function() {
-            x += dX;
-            vY -= dVy;
-            
-            y += vY * gameTick;
-            
-            Ball.stop().animate({
-                'left'   : x,
-                'bottom' : y
-            }, tick - 1);
-            
-            if (i++ > 0 && y <= 0) {
-                clearInterval(interval);
-                return;
-            }
-        };
-        
-        var interval = setInterval(Move, tick);
-        
-    }
+var start = document.getElementById("Fire"); 
 
-    $('#Fire').click(Fire);
-});
+function Fire() {
+  
+    var Angle  = parseFloat(document.getElementById("Angle").value) * (Math.PI / 180);
+    var Speed  = parseFloat(document.getElementById("Speed").value);
+    var g      = 9.81;
+    var x      = 250;
+    var y      = 535;
+        
+    var Ball  = document.getElementById("Ball");
+        
+    var tick = 20, gameTick = tick / 1000;
+
+    var vX = Speed * Math.cos(Angle), 
+        vY = Speed * Math.sin(Angle);
+        
+    var dX = vX * gameTick, dVy = g * gameTick;
+        
+    var Move = function() {
+        x += dX;
+        vY -= dVy;
+            
+        y -= vY * gameTick;
+
+        context.drawImage(background, 0, 0, canvas.width, canvas.height+500);
+        context.drawImage(img, 50, 530, 230, 100);
+        context.drawImage(img2, x, y, 25, 25);
+
+        if (y <= 0) {
+            clearInterval(interval);
+            return;
+        }
+    };
+    var interval = setInterval(Move, tick);
+}
+start.onclick = Fire;
